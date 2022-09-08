@@ -45,7 +45,7 @@ class Creator:
         if args1 == "db":
             return self.__db_creator(args=args2)
         elif args1 == "controller":
-            return
+            return self.__controller_creator(args=args2)
         elif args1 == "model":
             return
 
@@ -80,6 +80,13 @@ class Creator:
             create_config_file.close()
 
             print("database configuration successfully created, please run 'commander.py testing db:config' to make sure you are connected to your database")
+
+    def __controller_creator(self, args):
+        create_controller_file = open("app/controllers/" + args + ".py", "w")
+        create_controller_file.write("ini controller")
+        create_controller_file.close()
+        print("finish create controller")
+
 
 
 class Tester:

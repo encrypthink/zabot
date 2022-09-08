@@ -1,0 +1,10 @@
+Description:
+    List Commands
+
+Options:
+    --h, -help          Display help for the given command.
+    --v, -version       Display this application version.
+
+Available Commands:
+    create              Create something
+    testing             Testing something

@@ -7,7 +7,7 @@ class Schema:
         print("CREATE TABLE {} ({})".format(table_name, ", ".join(self.fields)))
 
 
-class Blueprint(Schema):
+class Blueprint:
     query = ""
 
     def id(self):
@@ -31,10 +31,10 @@ class Blueprint(Schema):
 
 
 class Test:
-    def up(self):
+    def up(self, column = Blueprint()):
         Schema().create("users", [
-            Blueprint().string("username").not_null(),
-            Blueprint().string("password"),
+            column.string("username").not_null(),
+            column.string("password"),
         ])
 
 t = Test()

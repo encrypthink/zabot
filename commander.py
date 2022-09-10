@@ -1,7 +1,6 @@
 import sys
 from modules.commander.console import Console
 
-
 argument_list = sys.argv[1:]
 
 first_params = [
@@ -11,6 +10,7 @@ first_params = [
     "-version",
     "create", 
     "testing",
+    "run"
 ]
 
 if argument_list[0] in first_params:

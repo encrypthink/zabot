@@ -32,3 +32,37 @@ class Database:
         except mysql.connector.Error as e:
             print(e)
             exit()
+
+    def execution(self, syntax):
+        connection = self.connection()
+        cursor = connection.cursor()
+
+        try:
+            return cursor.execute(syntax)
+        except mysql.connector.Error as e:
+            print(e)
+            exit()
+
+    def fetch_all(self, syntax):
+        connection = self.connection()
+        cursor = connection.cursor()
+
+        try:
+            cursor.execute(syntax)
+            return cursor.fetchmany()
+        except mysql.connector.Error as e:
+            print(e)
+            exit()
+
+
+    def syntax_execution(self, syntax):
+        connection = self.connection()
+        cursor = connection.cursor()
+
+        try:
+            cursor.execute(syntax)
+            connection.commit()
+            return cursor.rowcount
+        except mysql.connector.Error as e:
+            print(e)
+            exit()

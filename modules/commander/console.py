@@ -162,16 +162,20 @@ class Runner:
                 i = i+1
         else:
             already_migrated = connection.fetch_all("SELECT migration FROM migrations")
-            migrated = []
+            steps = connection.fetch_one("SELECT max(steps) from migrations")[0] + 1
+            migrated_list = []
             
             for i in already_migrated:
-                migrated.append(i[0])
+                migrated_list.append(i[0])
             
+            i = 0
             for migration in all_migrations:
-                if all_migrations in "create_migrations_table" and all_migrations not in migrated:
-                    self.__execute_migration(all_migrations[i]["filename"], all_migrations[i]["fullpath"])
-                    connection.syntax_execution("INSERT INTO migrations(migration, steps) VALUES ('{}', {})".format(all_migrations[i]["filename"], 1))
-
+                if "create_migrations_table" not in all_migrations[i]["filename"]:
+                    for migrated in migrated_list:
+                        if migrated not in all_migrations[i]["filename"]:
+                            self.__execute_migration(all_migrations[i]["filename"], all_migrations[i]["fullpath"])
+                            connection.syntax_execution("INSERT INTO migrations(migration, steps) VALUES ('{}', {})".format(all_migrations[i]["filename"], steps))
+                i = i+1
 
     def __execute_migration(self, filename, filepath):
         spec = importlib.util.spec_from_file_location(filename, filepath)

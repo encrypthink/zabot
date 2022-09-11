@@ -66,3 +66,14 @@ class Database:
         except mysql.connector.Error as e:
             print(e)
             exit()
+
+    def fetch_one(self, syntax):
+        connection = self.connection()
+        cursor = connection.cursor()
+
+        try:
+            cursor.execute(syntax)
+            return cursor.fetchone()
+        except mysql.connector.Error as e:
+            print(e)
+            exit()

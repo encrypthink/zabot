@@ -1,2 +1,9 @@
 # zabot
-Telegram bot CMS using python 3
+Please Wait, still in development
+
+Planning Features:
+- MVC Pattern 🔄 
+- SQL Query Builder 🔄 
+- Migration ✅ (In Development Progress)
+- Commander Console ✅
+

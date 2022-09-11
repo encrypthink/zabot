@@ -7,24 +7,30 @@ Planning Features:
 - Migration ✅ (In Development Progress)
 - Commander Console ✅
 
-## Comander Console
-
-# Generating Mysql Database Connection:
+# Requirements Setups
+For requirements run following commands:
 ```
-python3 comander.py create db:config
-```
-
-# Test Mysql Database Connection:
-```
-python3 python3 comander.py testing db:config
+$ python3 -m pip install -r requirements.txt
 ```
 
-# Generating Migrations:
-```
-python3 comander.py create migration:create_{TABLE_NANE}_table
-````
+# Comander Console
 
-# Running Migrations:
+## Generating Mysql Database Connection:
 ```
-python3 comander.py run migration
+$ python3 comander.py create db:config
+```
+
+## Test Mysql Database Connection:
+```
+$ python3 comander.py testing db:config
+```
+
+## Generating Migrations:
+```
+$ python3 comander.py create migration:create_{TABLE_NANE}_table
+```
+
+## Running Migrations:
+```
+$ python3 comander.py run migration
 ```

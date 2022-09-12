@@ -55,6 +55,15 @@ class Creator:
         print("finish create controller")
 
     def __migration_creator(self, args):
+        if "create" in args:
+            self.__migration_generate_create_file(args)
+        elif "modify" in args:
+            self.__migration_generate_modify_file(args)
+        else:
+            print("Illegal command, please use 'create TABLE_NAME table' if you want to create table, and use 'modify_TABLE_NAME_table' to modify your own table.")
+
+
+    def __migration_generate_create_file(self, args):
         date_now = datetime.now().strftime("%Y_%m_%m_%H_%M_%S")
         filename = args + "_" + date_now + ".py"
         class_name = String().snake_to_camel(args)
@@ -66,6 +75,22 @@ class Creator:
         create_migration_file.write("\n\t\tSchema().create({}, [".format(f'"{String().string_to_list(args)[1]}"'))
         create_migration_file.write("\n\t\t\tself.id(),")
         create_migration_file.write("\n\t\t\tself.timestamps()")
+        create_migration_file.write("\n\t\t])")
+        create_migration_file.write("\n\n\n\n\nup_migration = {}().up()".format(class_name))
+        create_migration_file.close()
+        print("finish create {} migration.".format(args))
+
+
+    def __migration_generate_modify_file(self, args):
+        date_now = datetime.now().strftime("%Y_%m_%m_%H_%M_%S")
+        filename = args + "_" + date_now + ".py"
+        class_name = String().snake_to_camel(args)
+        create_migration_file = open("database/migrations/" + filename, "w")
+        create_migration_file.write("from modules.databases.migration.migration import Migration")
+        create_migration_file.write("\nfrom modules.databases.migration.src.schema import Schema")
+        create_migration_file.write("\n\nclass {}({}):".format(class_name, "Migration"))
+        create_migration_file.write("\n\tdef up(self):")
+        create_migration_file.write("\n\t\tSchema().modify({}, [".format(f'"{String().string_to_list(args)[1]}"'))
         create_migration_file.write("\n\t\t])")
         create_migration_file.write("\n\n\n\n\nup_migration = {}().up()".format(class_name))
         create_migration_file.close()

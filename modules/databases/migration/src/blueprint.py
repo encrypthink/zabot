@@ -46,5 +46,16 @@ class Blueprint:
         self.query.append("updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP")
         return self
 
+    def drop_column(self, name):
+        self.query.append("DROP {}".format(name))
+        return self
+
+    def after(self, name):
+        count_field = len(self.query)
+        index_numered = count_field - 1
+        index_value = self.query[index_numered]
+        self.query[index_numered] = "{} AFTER {}".format(index_value, name)
+        return self
+
     def __str__(self):
         return ", ".join(self.query)

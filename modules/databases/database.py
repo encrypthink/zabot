@@ -49,7 +49,7 @@ class Database:
 
         try:
             cursor.execute(syntax)
-            return cursor.fetchmany()
+            return cursor.fetchall()
         except mysql.connector.Error as e:
             print(e)
             exit()

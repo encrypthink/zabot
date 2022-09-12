@@ -68,5 +68,17 @@ class Blueprint:
         self.query.append("PRIMARY KEY({})".format(column))
         return self
 
+    def date_time(self, name):
+        self.query.append("{} DATETIME".format(name))
+        return self
+
+    def date(self, name):
+        self.query.append("{} DATE".format(name))
+        return self
+
+    def time(self, name):
+        self.query.append("{} TIME".format(name))
+        return self
+
     def __str__(self):
         return ", ".join(self.query)

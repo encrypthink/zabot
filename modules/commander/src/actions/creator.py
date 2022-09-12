@@ -67,12 +67,15 @@ class Creator:
         date_now = datetime.now().strftime("%Y_%m_%m_%H_%M_%S")
         filename = args + "_" + date_now + ".py"
         class_name = String().snake_to_camel(args)
+        table_name = String().string_to_list(args)
+        del table_name[0]
+        del table_name[-1]
         create_migration_file = open("database/migrations/" + filename, "w")
         create_migration_file.write("from modules.databases.migration.migration import Migration")
         create_migration_file.write("\nfrom modules.databases.migration.src.schema import Schema")
         create_migration_file.write("\n\nclass {}({}):".format(class_name, "Migration"))
         create_migration_file.write("\n\tdef up(self):")
-        create_migration_file.write("\n\t\tSchema().create({}, [".format(f'"{String().string_to_list(args)[1]}"'))
+        create_migration_file.write("\n\t\tSchema().create({}, [".format(f'"{"_".join(table_name)}"'))
         create_migration_file.write("\n\t\t\tself.id(),")
         create_migration_file.write("\n\t\t\tself.timestamps()")
         create_migration_file.write("\n\t\t])")

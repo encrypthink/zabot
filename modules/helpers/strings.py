@@ -4,3 +4,6 @@ class String:
 
     def string_to_list(self, word):
         return list(word.split("_"))
+
+    def list_to_string(self, list):
+        return " ".join(list)

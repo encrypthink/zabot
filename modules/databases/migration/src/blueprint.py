@@ -57,5 +57,16 @@ class Blueprint:
         self.query[index_numered] = "{} AFTER {}".format(index_value, name)
         return self
 
+    def primary_key(self):
+        count_field = len(self.query)
+        index_numered = count_field - 1
+        index_value = self.query[index_numered]
+        self.query[index_numered] = "{} PRIMARY KEY".format(index_value)
+        return self
+
+    def set_primary_key(self, column):
+        self.query.append("PRIMARY KEY({})".format(column))
+        return self
+
     def __str__(self):
         return ", ".join(self.query)

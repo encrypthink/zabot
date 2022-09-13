@@ -4,7 +4,7 @@ Aprilia ORM
 Start Development   : 13 September 2022
 Author              : Tri Wijayanto
 Github              : https://github.com/encrypthink
-Description         : Aprilia is an object relational mapper (ORM).
+Description         : Aprilia is an SQL Query Builder.
 """
 
 
@@ -12,6 +12,8 @@ from abc import ABC, abstractmethod
 
 
 class Aprilia(ABC):
+
+    syntax = ""
 
     @property
     @abstractmethod
@@ -39,14 +41,27 @@ class Aprilia(ABC):
 
     @abstractmethod
     def all(self):
+        self.syntax = "SELECT * FROM {}".format(self.table)
         return self
 
     @abstractmethod
-    def count(self):
+    def count(self, column):
+        self.syntax = "SELECT COUNT({}) FROM {}".format(column, self.table)
+        return self
+
+    @abstractmethod
+    def min(self, column):
+        self.syntax = "SELECT MIN({}) FROM {}".format(column, self.table)
+        return self
+
+    @abstractmethod
+    def max(self, column):
+        self.syntax = "SELECT MAX({}) FROM {}".format(column, self.table)
         return self
 
     @abstractmethod
     def find(self, vals):
+        self.syntax = "SELECT * FROM {} WHERE {} = {}".format(self.table, self.primary_key, vals)
         return self
 
     @abstractmethod
@@ -54,12 +69,11 @@ class Aprilia(ABC):
         return self
     
     @abstractmethod
-    def select(self, columns="*"):
+    def select(self, columns: list):
+        self.syntax = "SELECT {} ".format(", ".join(columns))
         return self
 
     @abstractmethod
-    def where(self, column:str, operator, comps: str):
+    def where(self, column:str, operator:str, comparasion: str):
+        self.syntax = "WHERE {} {} {} ".format(column, operator, comparasion)
         return self
-
-
-a = Aprilia().select().get()

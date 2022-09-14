@@ -9,6 +9,7 @@ Description         : Aprilia is an SQL Query Builder.
 
 
 from abc import ABC, abstractmethod
+from dataclasses import field
 
 
 class Aprilia(ABC):
@@ -39,41 +40,48 @@ class Aprilia(ABC):
         return String
         """
 
-    @abstractmethod
     def all(self):
-        self.syntax = "SELECT * FROM {}".format(self.table)
-        return self
+        return "SELECT {} FROM {}".format(", ".join(self.fields), self.table)
 
-    @abstractmethod
     def count(self, column):
         self.syntax = "SELECT COUNT({}) FROM {}".format(column, self.table)
         return self
 
-    @abstractmethod
     def min(self, column):
         self.syntax = "SELECT MIN({}) FROM {}".format(column, self.table)
         return self
 
-    @abstractmethod
     def max(self, column):
         self.syntax = "SELECT MAX({}) FROM {}".format(column, self.table)
         return self
 
-    @abstractmethod
     def find(self, vals):
         self.syntax = "SELECT * FROM {} WHERE {} = {}".format(self.table, self.primary_key, vals)
         return self
 
-    @abstractmethod
     def get(self):
         return self
     
-    @abstractmethod
     def select(self, columns: list):
         self.syntax = "SELECT {} ".format(", ".join(columns))
         return self
 
-    @abstractmethod
     def where(self, column:str, operator:str, comparasion: str):
         self.syntax = "WHERE {} {} {} ".format(column, operator, comparasion)
         return self
+
+    def add(self, insert: dict):
+        fields: tuple = []
+        values: tuple = []
+
+        for i in insert: fields.append(i)
+        for i in insert: 
+            if isinstance(insert[i], str):
+                values.append(f'"{insert[i]}"')
+            else:
+                values.append(insert[i])
+
+        return "INSERT INTO {} ({}) VALUES ({})".format(self.table, ", ".join(fields), ", ".join(map(str, values)))
+
+
+        

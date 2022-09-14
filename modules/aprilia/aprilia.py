@@ -83,5 +83,17 @@ class Aprilia(ABC):
 
         return "INSERT INTO {} ({}) VALUES ({})".format(self.table, ", ".join(fields), ", ".join(map(str, values)))
 
+    def insert(self, insert: dict):
+        fields: tuple = []
+        values: tuple = []
+
+        for i in insert: fields.append(i)
+        for i in insert: 
+            if isinstance(insert[i], str):
+                values.append(f'"{insert[i]}"')
+            else:
+                values.append(insert[i])
+
+        return "INSERT INTO {} ({}) VALUES ({})".format(self.table, ", ".join(fields), ", ".join(map(str, values)))
 
         

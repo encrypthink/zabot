@@ -60,9 +60,9 @@ class Aprilia(ABC):
         self.syntax = "SELECT MAX({}) FROM {}".format(column, self.table)
         return self
 
-    def find(self, vals):
-        self.syntax = "SELECT * FROM {} WHERE {} = {}".format(self.table, self.primary_key, vals)
-        return self
+    def find(self, vals) -> dict:
+        query = "SELECT * FROM {} WHERE {} = {}".format(self.table, self.primary_key, vals)
+        return Database().fetch_one(query)
 
     def get(self):
         return self

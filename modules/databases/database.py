@@ -1,4 +1,6 @@
+from datetime import date, datetime, timedelta
 import json
+from time import strftime
 import mysql.connector
 from pathlib import Path
 
@@ -49,11 +51,33 @@ class Database:
 
         try:
             cursor.execute(syntax)
-            return cursor.fetchall()
+            cols_name = [i[0] for i in cursor.description]
+            raw_result = cursor.fetchall()
+            result: list() = []
+
+            i = 0
+            for row in raw_result:
+                in_row: dict() = {}
+                j = 0
+                for val in row:
+                    if type(val) == datetime:
+                        in_row[cols_name[j]] = val.strftime("%Y-%m-%d %H:%M:%S")
+                    elif type(val) == date:
+                        in_row[cols_name[j]] = val.strftime("%Y-%m-%d")
+                    elif type(val) == timedelta:
+                        in_row[cols_name[j]] = str(val)
+                    else:
+                        in_row[cols_name[j]] = val
+                    j = j+1
+
+                result.append(in_row)
+                i = i+1
+
+            return result
+
         except mysql.connector.Error as e:
             print(e)
             exit()
-
 
     def syntax_execution(self, syntax):
         connection = self.connection()
@@ -73,7 +97,8 @@ class Database:
 
         try:
             cursor.execute(syntax)
-            return cursor.fetchone()
+            result = cursor.fetchone()
+            return result[0]
         except mysql.connector.Error as e:
             print(e)
             exit()

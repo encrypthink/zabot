@@ -1,5 +1,5 @@
 """
-Aprilia ORM
+Aprilia Query Builder
 
 Start Development   : 13 September 2022
 Author              : Tri Wijayanto
@@ -9,7 +9,7 @@ Description         : Aprilia is an SQL Query Builder.
 
 
 from abc import ABC, abstractmethod
-from dataclasses import field
+from modules.databases.database import Database
 
 
 class Aprilia(ABC):
@@ -40,12 +40,17 @@ class Aprilia(ABC):
         return String
         """
 
-    def all(self):
-        return "SELECT {} FROM {}".format(", ".join(self.fields), self.table)
+    def all(self) -> list:
+        query = "SELECT * FROM {}".format(self.table)
+        return Database().fetch_all(query)
 
-    def count(self, column):
-        self.syntax = "SELECT COUNT({}) FROM {}".format(column, self.table)
-        return self
+    def count(self, column) -> int:
+        query = "SELECT COUNT({}) FROM {}".format(column, self.table)
+        return Database().fetch_one(query)
+
+    def sum(self, column) -> int:
+        query = "SELECT SUM({}) FROM {}".format(column, self.table)
+        return Database().fetch_one(query)
 
     def min(self, column):
         self.syntax = "SELECT MIN({}) FROM {}".format(column, self.table)
@@ -95,5 +100,5 @@ class Aprilia(ABC):
                 values.append(insert[i])
 
         return "INSERT INTO {} ({}) VALUES ({})".format(self.table, ", ".join(fields), ", ".join(map(str, values)))
-
+        
         
